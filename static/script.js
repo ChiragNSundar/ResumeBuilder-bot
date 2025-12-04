@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================
-//  FIXED PDF DOWNLOAD FUNCTION (Clone Strategy)
+//  FIXED PDF DOWNLOAD FUNCTION (Corrected Template Logic)
 // ============================================================
 function downloadPDF() {
     if (downloadPdfBtn) downloadPdfBtn.disabled = true;
@@ -109,9 +109,6 @@ function downloadPDF() {
     }
 
     // 3. CLONE & RENDER STRATEGY
-    // We create a temporary off-screen container. This forces the browser to render
-    // the element "visibly" (so html2canvas can see it) without showing it to the user.
-
     const container = document.createElement('div');
     container.style.position = 'absolute';
     container.style.top = '-9999px'; // Move far off-screen
@@ -147,7 +144,6 @@ function downloadPDF() {
             alert("Error generating PDF.");
         })
         .finally(() => {
-            // 5. Cleanup: Remove the temp container
             document.body.removeChild(container);
             if (downloadPdfBtn) downloadPdfBtn.disabled = false;
         });

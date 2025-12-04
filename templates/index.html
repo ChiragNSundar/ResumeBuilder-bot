@@ -29,7 +29,6 @@
             <i class="fa-solid fa-file-pen gradient-icon"></i>
             <span>JobPortal Resume</span>
         </div>
-        <!-- Links removed to keep project separation clean, or add back if needed -->
     </nav>
 
     <!-- Main Split Layout -->
@@ -44,25 +43,18 @@
                 </button>
             </div>
 
-            <!-- Progress Bar -->
             <div class="progress-container">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
 
-            <!-- Chat Messages -->
             <div id="chat-box" class="chat-box"></div>
-
-            <!-- Dynamic Suggestions Chips -->
             <div id="suggestion-area" class="suggestion-area"></div>
 
-            <!-- User Input Area -->
             <div class="input-area">
                 <div class="input-wrapper">
                     <label for="resume-upload" class="attach-btn" title="Upload PDF"><i class="fa-solid fa-file-pdf"></i></label>
                     <input type="file" id="resume-upload" accept="application/pdf" hidden>
-
                     <textarea id="user-input" placeholder="Type answer or upload PDF..." rows="1"></textarea>
-
                     <button onclick="sendResumeMessage()" id="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
@@ -72,8 +64,7 @@
         <div class="resume-form-container">
             <div class="form-header">
                 <h2><i class="fa-solid fa-id-card"></i> Candidate Profile</h2>
-                <!-- Download Button triggers JS function -->
-                <button onclick="downloadPDF()" class="submit-btn" style="background:#2c3e50; margin-bottom:10px; width:auto; display:inline-block;">
+                <button id="download-pdf-btn" onclick="downloadPDF()" class="submit-btn" style="background:#2c3e50; margin-bottom:10px; width:auto; display:inline-block;">
                     <i class="fa-solid fa-file-arrow-down"></i> Download PDF
                 </button>
             </div>
@@ -138,8 +129,10 @@
         </div>
     </div>
 
-    <!-- HIDDEN RESUME TEMPLATE (Used by html2pdf to generate the PDF) -->
-    <!-- Ensure IDs match script.js: tpl-name, tpl-email, etc. -->
+    <!--
+      HIDDEN RESUME TEMPLATE
+      Updated to remove "Education" and clearly list Profile details
+    -->
     <div id="resume-template" style="display:none;">
         <header>
             <h1 id="tpl-name">YOUR NAME</h1>
@@ -158,13 +151,20 @@
         </section>
 
         <section class="resume-section">
-            <div class="resume-section-title">Current Profile</div>
+            <div class="resume-section-title">Professional Profile</div>
             <div class="resume-content">
-                <div class="resume-job-header">
-                    <span id="tpl-job">Job Title</span>
+                <!-- Changed layout to list fields clearly -->
+                <div class="resume-field-row">
+                    <span class="field-label">Target Job Title:</span>
+                    <span class="field-value" id="tpl-job">Job Title</span>
                 </div>
-                <div class="resume-job-sub">
-                    Experience: <span id="tpl-exp">Level</span> | Domain: <span id="tpl-domain">Domain</span>
+                <div class="resume-field-row">
+                    <span class="field-label">Experience Level:</span>
+                    <span class="field-value" id="tpl-exp">Level</span>
+                </div>
+                <div class="resume-field-row">
+                    <span class="field-label">Industry / Domain:</span>
+                    <span class="field-value" id="tpl-domain">Domain</span>
                 </div>
             </div>
         </section>
@@ -176,16 +176,7 @@
             </div>
         </section>
 
-        <section class="resume-section">
-            <div class="resume-section-title">Education</div>
-            <div class="resume-content">
-                <div class="resume-job-header">
-                    <span>Degree / Certification</span>
-                    <span>Year</span>
-                </div>
-                <div class="resume-job-sub">University / Institution</div>
-            </div>
-        </section>
+        <!-- Education Section Removed -->
     </div>
 
     <!-- Success Modal -->

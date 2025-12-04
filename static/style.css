@@ -54,45 +54,9 @@ body {
     font-size: 1.5rem;
 }
 
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-link {
-    color: #aaa;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-.nav-link:hover {
-    background: rgba(255,255,255,0.05);
-    color: white;
-}
-
-.nav-link.active {
-    background: rgba(108, 92, 231, 0.2);
-    color: #00ff88;
-}
-
 /* =========================================
    3. APP LAYOUTS (Chat & Resume)
    ========================================= */
-/* General Chat Layout */
-.app-layout {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    padding-top: 60px;
-}
-
-/* Resume Specific Layout */
 .resume-layout {
     display: flex;
     width: 100%;
@@ -101,71 +65,7 @@ body {
     background: #0f0f1a;
 }
 
-/* Sidebar (For Standard Chat) */
-.sidebar {
-    width: 260px;
-    background: rgba(0, 0, 0, 0.2);
-    border-right: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-.new-chat-btn {
-    width: 100%;
-    padding: 12px;
-    background: #6c5ce7;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    margin-bottom: 20px;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.new-chat-btn:hover { background: #5b4bc4; }
-
-.conversation-list { flex: 1; overflow-y: auto; }
-
-.chat-item {
-    padding: 12px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #ccc;
-    transition: 0.2s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-item:hover { background: rgba(255,255,255,0.05); color: white; }
-.chat-item.active { background: rgba(255,255,255,0.1); color: white; border-left: 3px solid #00ff88; }
-
-.delete-chat {
-    color: #ff4757;
-    opacity: 0;
-    transition: 0.2s;
-    font-size: 0.9rem;
-}
-
-.chat-item:hover .delete-chat { opacity: 1; }
-
-/* Main Chat Area */
-.main-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: radial-gradient(circle at top right, rgba(20, 20, 35, 0.8), #0f0f1a);
-    position: relative;
-}
-
-/* Resume Left Panel */
+/* Resume Left Panel (Chat) */
 .resume-chat-container {
     flex: 1;
     display: flex;
@@ -186,22 +86,28 @@ body {
     align-items: center;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #00ff88;
-    box-shadow: 0 0 10px #00ff88;
-    margin-left: 10px;
+.new-chat-btn {
+    padding: 8px 15px;
+    background: #ff4757;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
 }
 
-/* Feature 1: Progress Bar */
+.new-chat-btn:hover { background: #e04050; }
+
+/* Progress Bar */
 .progress-container {
     width: 100%;
     height: 4px;
     background: rgba(255,255,255,0.1);
     position: relative;
-    top: 0;
 }
 
 .progress-bar {
@@ -211,25 +117,6 @@ body {
     transition: width 0.3s ease;
     box-shadow: 0 0 5px #00ff88;
 }
-
-/* Settings Panel */
-.settings-panel {
-    background: rgba(0, 0, 0, 0.4);
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.4s ease;
-    padding: 0 30px;
-}
-
-.settings-panel.open {
-    max-height: 100px;
-    padding: 20px 30px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.setting-item label { display: block; margin-bottom: 10px; color: #ccc; }
-#temp-value { color: #00ff88; font-weight: bold; }
-input[type=range] { width: 100%; cursor: pointer; }
 
 /* Chat Box & Messages */
 .chat-box {
@@ -282,14 +169,6 @@ input[type=range] { width: 100%; cursor: pointer; }
     background: rgba(255, 71, 87, 0.15);
     border: 1px solid #ff4757;
     color: #ff7675;
-}
-
-.message-img {
-    max-width: 200px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: block;
-    border: 1px solid rgba(255,255,255,0.2);
 }
 
 /* Suggestion Chips */
@@ -348,8 +227,7 @@ textarea {
     font-size: 1rem;
 }
 
-/* Chat Buttons */
-.attach-btn, #mic-btn, #send-btn, #stop-btn {
+.attach-btn, #send-btn {
     background: transparent;
     border: none;
     color: #aaa;
@@ -363,54 +241,10 @@ textarea {
     align-items: center;
 }
 
-.attach-btn:hover, #mic-btn:hover {
-    color: white;
-    background: rgba(255,255,255,0.1);
-}
+.attach-btn:hover { color: white; background: rgba(255,255,255,0.1); }
 
 #send-btn { background: #6c5ce7; color: white; }
 #send-btn:hover { background: #5b4bc4; }
-#stop-btn { background: #ff4757; color: white; }
-
-#mic-btn.recording {
-    color: #ff4757;
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-#image-preview-container {
-    padding: 0 30px 10px;
-    position: relative;
-    display: inline-block;
-}
-
-#image-preview {
-    height: 80px;
-    border-radius: 8px;
-    border: 1px solid #555;
-}
-
-.close-img-btn {
-    position: absolute;
-    top: -5px;
-    right: 25px;
-    background: red;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-}
 
 /* =========================================
    5. RESUME FORM (Right Side)
@@ -462,7 +296,7 @@ textarea {
     box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
 }
 
-/* Feature 2: Flash Update Animation */
+/* Flash Update Animation */
 @keyframes highlightPulse {
     0% { border-color: #ddd; box-shadow: none; }
     50% { border-color: #00ff88; box-shadow: 0 0 8px rgba(0,255,136,0.4); }
@@ -634,7 +468,7 @@ code {
 }
 
 /* =========================================
-   7. PDF RESUME TEMPLATE STYLING (FIXED)
+   7. PDF RESUME TEMPLATE STYLING (UPDATED)
    ========================================= */
 #resume-template {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -644,7 +478,7 @@ code {
     width: 800px;
     padding: 40px 50px;
     box-sizing: border-box;
-    /* Hidden initially, JS makes it block + absolute for snapshot */
+    /* Hidden initially, JS handles display during clone/snapshot */
     display: none;
 }
 
@@ -684,17 +518,30 @@ code {
 
 .resume-content { font-size: 14px; color: #444; }
 
-.resume-job-header {
+/*
+   UPDATED: Field Row Styling
+   Ensures Job Title, Experience, and Domain are visible in the PDF
+*/
+.resume-field-row {
+    margin-bottom: 8px;
     display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-    font-size: 16px;
-    color: #000;
-    margin-bottom: 5px;
+    align-items: flex-start; /* Aligns text to top if wrapping occurs */
 }
 
-.resume-job-sub { font-style: italic; color: #666; margin-bottom: 10px; }
+.field-label {
+    font-weight: bold;
+    width: 180px; /* Fixed width for alignment */
+    color: #2c3e50;
+    flex-shrink: 0;
+}
 
+.field-value {
+    color: #000;
+    font-weight: 500;
+    flex: 1;
+}
+
+/* Skills Grid */
 .resume-skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .resume-skill-item {
