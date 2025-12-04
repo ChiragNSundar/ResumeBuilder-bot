@@ -8,6 +8,7 @@ import google.generativeai as genai
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId
+import re
 
 load_dotenv()
 
