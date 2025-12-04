@@ -634,28 +634,18 @@ code {
 }
 
 /* =========================================
-   7. PDF RESUME TEMPLATE STYLING (CRITICAL FIX)
+   7. PDF RESUME TEMPLATE STYLING (FIXED)
    ========================================= */
 #resume-template {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #000000; /* Force Black Text */
-    background: #ffffff; /* Force White Background */
+    color: #333;
     line-height: 1.6;
-    width: 800px; /* Fixed A4 width ratio */
-    min-height: 1100px; /* Ensure full page height */
+    background: #fff;
+    width: 800px;
     padding: 40px 50px;
     box-sizing: border-box;
-
-    /* Overlay Strategy: Hidden by default, Absolute & Top when active */
+    /* Hidden initially, JS makes it block + absolute for snapshot */
     display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 99999; /* Highest priority to sit on top */
-
-    border: none;
-    margin: 0;
-    box-shadow: none;
 }
 
 #resume-template h1 {
@@ -671,7 +661,7 @@ code {
 .resume-contact {
     text-align: center;
     font-size: 14px;
-    color: #555; /* Ensure visible against white */
+    color: #7f8c8d;
     margin-bottom: 30px;
     border-bottom: 2px solid #2c3e50;
     padding-bottom: 20px;
@@ -686,13 +676,13 @@ code {
     text-transform: uppercase;
     font-weight: bold;
     color: #2c3e50;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #bdc3c7;
     padding-bottom: 5px;
     margin-bottom: 15px;
     letter-spacing: 1px;
 }
 
-.resume-content { font-size: 14px; color: #333; }
+.resume-content { font-size: 14px; color: #444; }
 
 .resume-job-header {
     display: flex;
@@ -708,11 +698,11 @@ code {
 .resume-skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .resume-skill-item {
-    background: #f0f0f0;
-    color: #000;
+    background: #ecf0f1;
+    color: #2c3e50;
     padding: 5px 12px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: 600;
-    border: 1px solid #ccc;
+    border: 1px solid #bdc3c7;
 }

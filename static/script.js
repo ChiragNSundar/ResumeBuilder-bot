@@ -6,6 +6,7 @@ const formPlaceholder = document.getElementById('form-placeholder');
 const successModal = document.getElementById('success-modal');
 const resumeUpload = document.getElementById('resume-upload');
 const progressBar = document.getElementById('progress-bar');
+const downloadPdfBtn = document.getElementById('download-pdf-btn');
 
 let currentStep = -1;
 let collectedData = {};
@@ -19,7 +20,6 @@ const RESUME_STEPS = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Only run on resume page
     if(!finalForm) return;
 
     const savedData = localStorage.getItem('resumeData');
@@ -47,62 +47,110 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// --- REVERTED SIMPLE PDF DOWNLOADER ---
+// ============================================================
+//  FIXED PDF DOWNLOAD FUNCTION (Clone Strategy)
+// ============================================================
 function downloadPDF() {
+    if (downloadPdfBtn) downloadPdfBtn.disabled = true;
+
     // 1. Validation
-    const requiredIds = ['form-full_name', 'form-email', 'form-phone', 'form-job_title', 'form-skills', 'form-summary'];
-    let missing = [];
-    requiredIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el || !el.value.trim()) missing.push(id.replace('form-', '').replace('_', ' '));
+    const fieldsToCheck = [
+        { id: 'form-full_name', label: 'Full Name' },
+        { id: 'form-email', label: 'Email' },
+        { id: 'form-phone', label: 'Phone' },
+        { id: 'form-experience_level', label: 'Experience' },
+        { id: 'form-domain', label: 'Domain' },
+        { id: 'form-job_title', label: 'Job Title' },
+        { id: 'form-skills', label: 'Skills' },
+        { id: 'form-summary', label: 'Summary' }
+    ];
+
+    let missingFields = [];
+    fieldsToCheck.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (!element || element.value.trim() === "") {
+            missingFields.push(field.label);
+        }
     });
-    if (missing.length > 0) return alert(`Cannot download PDF.\nPlease fill: ${missing.join(', ')}`);
 
-    // 2. Populate Template
-    const getValue = (id) => document.getElementById(id).value || "";
+    if (missingFields.length > 0) {
+        alert("❌ Cannot Download PDF.\n\nPlease fill in:\n\n- " + missingFields.join("\n- "));
+        if (downloadPdfBtn) downloadPdfBtn.disabled = false;
+        return;
+    }
 
-    document.getElementById('tpl-name').innerText = getValue('form-full_name');
-    document.getElementById('tpl-email').innerText = getValue('form-email');
-    document.getElementById('tpl-phone').innerText = getValue('form-phone');
-    document.getElementById('tpl-job').innerText = getValue('form-job_title');
-    document.getElementById('tpl-summary').innerText = getValue('form-summary');
-    document.getElementById('tpl-exp').innerText = getValue('form-experience_level') || "Not specified";
-    document.getElementById('tpl-domain').innerText = getValue('form-domain') || "General";
+    // 2. Update the Hidden Template with Data
+    const template = document.getElementById('resume-template');
+
+    // Fill text fields
+    document.getElementById('tpl-name').innerText = document.getElementById('form-full_name').value;
+    document.getElementById('tpl-email').innerText = document.getElementById('form-email').value;
+    document.getElementById('tpl-phone').innerText = document.getElementById('form-phone').value;
+    document.getElementById('tpl-exp').innerText = document.getElementById('form-experience_level').value;
+    document.getElementById('tpl-domain').innerText = document.getElementById('form-domain').value;
+    document.getElementById('tpl-job').innerText = document.getElementById('form-job_title').value;
+    document.getElementById('tpl-summary').innerText = document.getElementById('form-summary').value;
     document.getElementById('tpl-location').innerText = "Open to Remote/Relocation";
 
-    // Populate Skills
-    const skillsText = getValue('form-skills');
+    // Fill skills (Clear old ones first)
+    const skillsText = document.getElementById('form-skills').value;
     const skillsContainer = document.getElementById('tpl-skills-container');
     skillsContainer.innerHTML = '';
+
     if (skillsText) {
-        skillsText.split(',').forEach(s => {
-            if(s.trim()) {
-                const span = document.createElement('span');
+        skillsText.split(',').forEach(skill => {
+            if (skill.trim()) {
+                let span = document.createElement('span');
                 span.className = 'resume-skill-item';
-                span.innerText = s.trim();
+                span.innerText = skill.trim();
                 skillsContainer.appendChild(span);
             }
         });
     }
 
-    // 3. SIMPLE RENDER STRATEGY
-    const element = document.getElementById('resume-template');
+    // 3. CLONE & RENDER STRATEGY
+    // We create a temporary off-screen container. This forces the browser to render
+    // the element "visibly" (so html2canvas can see it) without showing it to the user.
 
-    // Make it visible just for the snapshot
-    element.style.display = 'block';
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.top = '-9999px'; // Move far off-screen
+    container.style.left = '0';
+    container.style.width = '800px'; // Force A4 width on container
+    document.body.appendChild(container);
+
+    // Clone the template
+    const clone = template.cloneNode(true);
+    clone.style.display = 'block'; // Make clone visible
+    clone.style.width = '100%';    // Fill container
+
+    // Append clone to the off-screen container
+    container.appendChild(clone);
+
+    // 4. Generate PDF
+    const filename = document.getElementById('form-full_name').value.replace(/\s+/g, '_') + "_Resume.pdf";
 
     const opt = {
         margin: 0,
-        filename: `${getValue('form-full_name').replace(/\s+/g, '_')}_Resume.pdf`,
+        filename: filename,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 
-    html2pdf().set(opt).from(element).save().then(() => {
-        // Hide it again immediately after
-        element.style.display = 'none';
-    });
+    html2pdf().set(opt).from(clone).save()
+        .then(() => {
+            console.log("PDF generated successfully.");
+        })
+        .catch(err => {
+            console.error("PDF generation failed:", err);
+            alert("Error generating PDF.");
+        })
+        .finally(() => {
+            // 5. Cleanup: Remove the temp container
+            document.body.removeChild(container);
+            if (downloadPdfBtn) downloadPdfBtn.disabled = false;
+        });
 }
 
 // --- CHAT LOGIC ---
@@ -226,7 +274,6 @@ function renderSuggestions(suggestions, currentFieldName) {
 }
 
 function uploadResume(file) {
-    // FIX: Clear old data first
     collectedData = {};
     updateLiveForm({});
     localStorage.setItem('resumeData', JSON.stringify({}));
